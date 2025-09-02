@@ -1,0 +1,48 @@
+{
+  "name": "ryys",
+  "version": "1.0.0",
+  "description": "A minimal web framework",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/Eelinki/ryys",
+  "bugs": {
+    "url": "https://github.com/Eelinki/ryys/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eelinki/ryys.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">22.0.0"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "release": "bumpp && npm publish"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "bumpp": "^10.1.0",
+    "tsdown": "^0.11.9",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
+  },
+  "dependencies": {
+    "@remix-run/multipart-parser": "^0.11.0",
+    "cookie": "^1.0.2",
+    "file-type": "^21.0.0",
+    "raw-body": "^3.0.0"
+  }
+}
