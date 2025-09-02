@@ -43,8 +43,8 @@ Request handler
 import * as Ryys from 'ryys';
 
 export default class Index implements Ryys.RequestHandler {
-    async handle(request: Ryys.RyysRequest): Promise<Ryys.RyysResponse> {
-        return new Ryys.RyysResponse().html(`<p>Ryys!</p>`);
+    async handle(request: Ryys.Request): Promise<Ryys.Response> {
+        return new Ryys.Response().html(`<p>Ryys!</p>`);
     }
 }
 ```
@@ -61,7 +61,7 @@ export default class DateLoader implements Ryys.Middleware {
         this.next = next;
     }
 
-    async handle(request: Ryys.RyysRequest): Promise<Ryys.RyysResponse> {
+    async handle(request: Ryys.Request): Promise<Ryys.Response> {
         let date = new Date();
         request.store().set('date', date);
 
