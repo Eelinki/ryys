@@ -9,6 +9,8 @@ import {
 import getRawBody, {type RawBodyError} from 'raw-body';
 import {fileTypeFromBuffer, type FileTypeResult} from "file-type";
 import type {BodyParserOptions} from "./ryys";
+import {writeFile} from "node:fs/promises";
+import type {PathLike} from "node:fs";
 
 export interface Parser {
     parse(request: Request): Promise<Object>
@@ -123,5 +125,9 @@ export class File {
 
     size(): number {
         return this.part.arrayBuffer.byteLength ?? 0;
+    }
+
+    moveTo(path: PathLike): Promise<void> {
+        return writeFile(path, this.part.bytes);
     }
 }
