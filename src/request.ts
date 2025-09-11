@@ -12,7 +12,6 @@ export interface Middleware extends RequestHandler { }
 
 export class Request {
     public rawMessage: http.IncomingMessage;
-    public params: string[];
     public url: URL;
     private _attributes: {[name: string]: string;};
     private _cookies: Record<string, string | undefined> | null;
@@ -21,7 +20,6 @@ export class Request {
 
     constructor(req: http.IncomingMessage, bodyParserOptions: Required<BodyParserOptions>) {
         this.rawMessage = req;
-        this.params = [];
         this._attributes = {};
         const url = URL.parse(`http://${process.env.HOST ?? 'localhost'}${req.url}`);
         if (!url) {
