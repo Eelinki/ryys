@@ -13,9 +13,9 @@ export interface Middleware extends RequestHandler { }
 export class Request {
     public rawMessage: http.IncomingMessage;
     public params: string[];
-    private _attributes: {[name: string]: string;};
     public url: URL;
-    private readonly cookies: Record<string, string | undefined> | null;
+    private _attributes: {[name: string]: string;};
+    private _cookies: Record<string, string | undefined> | null;
     private readonly _store: Map<string, any>;
     public bodyParserOptions: Required<BodyParserOptions>;
 
@@ -28,7 +28,7 @@ export class Request {
             throw new Error('Could not parse URL from request');
         }
         this.url = url;
-        this.cookies = null;
+        this._cookies = null;
         this._store = new Map();
         this.bodyParserOptions = bodyParserOptions;
     }
@@ -55,11 +55,19 @@ export class Request {
         return this.url.searchParams.get(name) ?? defaultValue;
     }
 
+    setCookies(cookies: Record<string, string | undefined>) {
+        this._cookies = cookies;
+    }
+
+    cookies(): Record<string, string | undefined> | null {
+        return this._cookies;
+    }
+
     cookie(name: string, defaultValue: string = ''): string {
-        if (!this.cookies) {
+        if (!this._cookies) {
             throw new Error('Tried to access cookies before parsing them');
         }
-        return this.cookies[name] ?? defaultValue;
+        return this._cookies[name] ?? defaultValue;
     }
 
     async json(): Promise<Object> {

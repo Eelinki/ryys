@@ -12,7 +12,7 @@ export class CookieParser implements Middleware {
     async handle(request: Request): Promise<Response> {
         const cookieHeader = request.rawMessage.headers.cookie;
         if (cookieHeader && request.cookies === null) {
-            request.cookies = cookie.parse(cookieHeader);
+            request.setCookies(cookie.parse(cookieHeader));
         }
 
         return await this.next.handle(request);
