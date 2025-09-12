@@ -17,6 +17,8 @@ export class Request {
     private _cookies: Record<string, string | undefined> | null;
     private readonly _store: Map<string, any>;
     public bodyParserOptions: Required<BodyParserOptions>;
+    private _multipart: Promise<{formData: FormData, files: File[]}> | null;
+    private _json: Promise<Object> | null;
 
     constructor(req: http.IncomingMessage, bodyParserOptions: Required<BodyParserOptions>) {
         this.rawMessage = req;
@@ -27,6 +29,8 @@ export class Request {
         }
         this.url = url;
         this._cookies = null;
+        this._multipart = null;
+        this._json = null;
         this._store = new Map();
         this.bodyParserOptions = bodyParserOptions;
     }
@@ -69,11 +73,17 @@ export class Request {
     }
 
     async json(): Promise<Object> {
-        return await new JsonParser(this.bodyParserOptions).parse(this);
+        if (!this._json) {
+            this._json = new JsonParser(this.bodyParserOptions).parse(this);
+        }
+        return this._json;
     }
 
     async multipart(): Promise<{formData: FormData, files: File[]}> {
-        return await new FormDataParser(this.bodyParserOptions).parse(this);
+        if (!this._multipart) {
+            this._multipart = new FormDataParser(this.bodyParserOptions).parse(this);
+        }
+        return this._multipart;
     }
 
     store(): Map<string, any> {
